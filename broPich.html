@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pich_Shop - Unique Adopt Me! Pets</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ---------- GENERAL ---------- */
+body { font-family:'Poppins',sans-serif; margin:0; background:#fff7f7; color:#333; line-height:1.6; transition: background 0.3s, color 0.3s; }
+a { text-decoration:none; color:inherit; }
+button { cursor:pointer; outline:none; }
+
+/* ---------- HEADER ---------- */
+header { background:linear-gradient(135deg,#ff7e8d,#ffc2d1); padding:1rem 2rem; color:white; box-shadow:0 4px 10px rgba(0,0,0,0.1); position:sticky; top:0; z-index:100; transition: all 0.3s; }
+header.dark { background:#333; }
+header .nav-container { display:flex; justify-content:space-between; align-items:center; }
+header h1 { font-family:'Pacifico',cursive; font-size:2.5rem; margin:0; }
+header nav a { margin-left:1.5rem; font-weight:600; transition: color 0.3s; }
+header nav a:hover { color:#ffebeb; }
+
+/* ---------- HERO ---------- */
+.hero { text-align:center; padding:4rem 1rem; background:linear-gradient(135deg,#ff9aa2,#ffc2d1); border-radius:20px; margin:1.5rem auto; max-width:1200px; box-shadow:0 8px 16px rgba(0,0,0,0.1); transition: all 0.3s; }
+.hero h2 { font-size:2.8rem; margin-bottom:1rem; color:#fff; }
+.hero p { font-size:1.2rem; margin-bottom:2rem; color:#fff; }
+.hero .shop-btn { padding:1rem 2rem; background:#ff6f61; color:white; font-weight:bold; border-radius:30px; text-decoration:none; box-shadow:0 4px 10px rgba(255,110,110,0.4); transition: all 0.3s; }
+.hero .shop-btn:hover { transform: scale(1.05); box-shadow:0 6px 14px rgba(255,110,110,0.6); }
+
+/* ---------- FILTERS ---------- */
+.filters { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:2rem; }
+.search-wrapper { display:inline-flex; align-items:center; background:white; border-radius:30px; border:2px solid #ff7e8d; padding:0.3rem 1rem; width:300px; box-shadow:0 2px 6px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+.search-wrapper:focus-within { box-shadow:0 0 10px rgba(255,126,141,0.5); transform:scale(1.02); }
+.search-wrapper i { color:#ff6f61; margin-right:0.5rem; }
+#searchBar { flex:1; padding:0.6rem; font-size:1rem; border:none; outline:none; background:none; }
+.filter-btn { padding:0.5rem 1rem; border-radius:20px; border:none; background:#ff6f61; color:white; font-weight:bold; transition: all 0.3s; }
+.filter-btn:hover, .filter-btn.active { transform:scale(1.05); background:#ff4a4a; }
+
+/* ---------- PET GRID ---------- */
+#pet-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:2rem; }
+.pet-card { background:white; border-radius:20px; box-shadow:0 8px 16px rgba(0,0,0,0.08); text-align:center; padding:1rem; transition: transform 0.3s, box-shadow 0.3s, background 0.6s; position:relative; }
+.pet-card:hover { transform: translateY(-8px) scale(1.02); box-shadow:0 12px 24px rgba(0,0,0,0.2); background:linear-gradient(135deg,#ffe0e0,#fff7f7); }
+.pet-card img { width:100%; border-radius:15px; margin-bottom:1rem; border:3px solid #f0f0f0; cursor:pointer; transition: transform 0.3s; }
+.pet-card img:hover { transform:scale(1.05); }
+.pet-card h3 { margin:0; font-size:1.4rem; font-weight:600; }
+.price { display:inline-block; background:#ff6f61; color:white; padding:0.3rem 0.8rem; border-radius:15px; margin-top:0.5rem; font-weight:bold; font-size:1rem; }
+
+/* ---------- RARITY ---------- */
+.rarity { display:inline-block; padding:0.3rem 0.8rem; border-radius:30px; font-weight:bold; font-size:0.8rem; margin:0.4rem; text-transform:uppercase; letter-spacing:1px; color:white; transition: transform 0.2s; }
+.rarity.devine { background:linear-gradient(90deg,#7e5fff,#d17eff); }
+.rarity.legendary { background:linear-gradient(90deg,#ffbf00,#ff7f50); }
+.rarity.mythical { background:linear-gradient(90deg,#6a5acd,#00bfff); }
+.rarity.prismatic { background:linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); background-size:400%; animation: rainbowShift 5s linear infinite; }
+.rarity.uncommon { background:#32cd32; }
+.rarity.common { background:#808080; }
+@keyframes rainbowShift {0%{background-position:0%}100%{background-position:400%} }
+
+/* ---------- ADD & FAV BUTTON ---------- */
+.add-btn, .fav-btn { display:inline-block; margin-top:0.5rem; padding:0.5rem 1rem; border-radius:30px; border:none; font-weight:bold; cursor:pointer; transition: all 0.3s; }
+.add-btn { background:linear-gradient(135deg,#ff6f61,#ff8e8e); color:white; }
+.add-btn:hover { transform:scale(1.05); box-shadow:0 6px 14px rgba(255,110,110,0.6); background:linear-gradient(135deg,#ff4a4a,#ff6f61); }
+.fav-btn { background:#ddd; color:#ff4a4a; margin-left:5px; }
+.fav-btn.active { background:#ff4a4a; color:white; }
+
+/* ---------- CART ---------- */
+#cart-container { position:fixed; top:80px; right:-350px; width:320px; background:white; border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.2); padding:1rem; z-index:999; transition: right 0.3s; }
+#cart-container.show { right:20px; }
+#cart-container h3 { text-align:center; margin-top:0; display:flex; justify-content:space-between; align-items:center; }
+#cart-items { list-style:none; padding:0; max-height:350px; overflow-y:auto; margin:0; }
+.cart-close { cursor:pointer; font-size:1.2rem; }
+.cart-item { display:flex; align-items:center; justify-content:space-between; padding:0.5rem; background:#ffe0e0; border-radius:15px; margin-bottom:0.5rem; gap:5px; }
+.cart-item img { width:40px; height:40px; border-radius:8px; object-fit:cover; }
+.cart-item .qty { width:40px; text-align:center; }
+.buy-cart-btn, #clear-cart { width:100%; margin-top:10px; padding:0.6rem; background: linear-gradient(135deg,#ff6f61,#ff8e8e); border:none; color:white; font-weight:bold; border-radius:15px; cursor:pointer; }
+.buy-cart-btn:hover, #clear-cart:hover { background: linear-gradient(135deg,#ff4a4a,#ff6f61); }
+
+/* ---------- FOOTER ---------- */
+footer { background:#ff6f61; color:white; padding:3rem 1rem 1rem 1rem; border-top-left-radius:40px; border-top-right-radius:40px; }
+footer .footer-inner { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; max-width:1200px; margin:auto; }
+footer .footer-section { flex:1 1 250px; margin:1rem; }
+footer h4 { font-family:'Pacifico',cursive; font-size:1.5rem; margin-bottom:1rem; }
+footer p { font-size:0.9rem; line-height:1.4; }
+footer a { color:white; transition: color 0.2s; }
+footer a:hover { color:#ffd6d6; }
+footer .social-icons a { margin-right:10px; font-size:1.5rem; display:inline-block; }
+
+/* ---------- FLOATING BUTTONS ---------- */
+.telegram-float, #cart-toggle, #buy-now, #dark-mode-toggle { position:fixed; bottom:20px; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition: transform 0.3s ease; z-index:1000; }
+.telegram-float { right:20px; background:#0088cc; color:white; }
+.telegram-float:hover { transform:scale(1.1); background:#0077b6; }
+#cart-toggle { right:100px; background:#ff6f61; color:white; cursor:pointer; }
+#cart-toggle:hover { transform:scale(1.1); }
+#buy-now { right:180px; background:#ff8e6f; cursor:pointer; }
+#buy-now:hover { transform:scale(1.1); }
+#dark-mode-toggle { right:260px; background:#333; color:white; cursor:pointer; }
+#dark-mode-toggle:hover { transform:scale(1.1); }
+
+/* ---------- DARK MODE ---------- */
+body.dark { background:#1a1a1a; color:#ddd; }
+body.dark header { background:#222; }
+body.dark .hero { background:#ff4a4a; }
+body.dark .pet-card { background:#333; color:#fff; }
+body.dark .add-btn, body.dark .filter-btn { background:#ff4a4a; color:white; }
+body.dark footer { background:#222; }
+
+/* ---------- MEDIA ---------- */
+@media(max-width:768px){ header .nav-container { flex-direction:column; gap:1rem; } footer .footer-inner { flex-direction:column; gap:1rem; } }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <h1>Pich_Shop</h1>
+        <nav>
+            <a href="#pet-catalog">Shop</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <h2>Adopt the Cutest Grow a Garden Pets!</h2>
+    <p>Unique pets, colorful rarities, and instant Telegram support!</p>
+    <a href="#pet-catalog" class="shop-btn">🐾 Shop Now</a>
+</section>
+
+<main>
+<section id="pet-catalog">
+    <div class="filters">
+        <div class="search-wrapper"><i class="fas fa-search"></i><input type="text" id="searchBar" placeholder="Search pets..."></div>
+        <button class="filter-btn active" data-rarity="all">All</button>
+        <button class="filter-btn" data-rarity="devine">Devine</button>
+        <button class="filter-btn" data-rarity="legendary">Legendary</button>
+        <button class="filter-btn" data-rarity="mythical">Mythical</button>
+        <button class="filter-btn" data-rarity="uncommon">Uncommon</button>
+        <button class="filter-btn" data-rarity="common">Common</button>
+        <button class="filter-btn" data-rarity="prismatic">Prismatic</button>
+    </div>
+    <div style="margin:10px 0; text-align:center;">
+        Sort by: 
+        <button class="filter-btn" id="sort-low">Price ↑</button>
+        <button class="filter-btn" id="sort-high">Price ↓</button>
+        <button class="filter-btn" id="sort-name">Name</button>
+        Price Range: <input type="range" id="priceRange" min="1" max="50" value="50">
+        <span id="priceRangeValue">50</span>
+        <button class="filter-btn" id="show-fav">❤️ Favorites</button>
+    </div>
+    <div id="pet-grid"></div>
+</section>
+</main>
+
+<!-- CART -->
+<div id="cart-container">
+    <h3>Cart 🛒 <span class="cart-close">✖</span></h3>
+    <ul id="cart-items"></ul>
+    <div id="cart-total" style="text-align:center; margin-top:10px; font-weight:bold;"></div>
+    <button id="buyCartBtn" class="buy-cart-btn">💌 Buy Selected Pets</button>
+    <button id="clear-cart" class="buy-cart-btn">🗑 Clear Cart</button>
+</div>
+
+<!-- FLOATING BUTTONS -->
+<a id="cart-toggle"><i class="fas fa-shopping-cart"></i></a>
+<a id="buy-now" title="Buy Cart"><i class="fas fa-credit-card"></i></a>
+<a id="dark-mode-toggle" title="Dark Mode"><i class="fas fa-moon"></i></a>
+<a href="https://t.me/NO_VA09" class="telegram-float" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-section"><h4>Pich_Shop</h4><p>Adopt unique Grow a Garden pets with beautiful rarities. Fast support via Telegram.</p></div>
+        <div class="footer-section"><h4>Contact</h4><p>Email: support@pichshop.com</p><p>Telegram: <a href="https://t.me/NO_VA09" target="_blank">@NO_VA09</a></p></div>
+        <div class="footer-section"><h4>Follow Us</h4><div class="social-icons"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="https://t.me/NO_VA09" target="_blank"><i class="fab fa-telegram-plane"></i></a></div></div>
+    </div>
+    <div style="text-align:center; margin-top:1rem; font-size:0.9rem;">© 2025 Pich_Shop. All rights reserved.</div>
+</footer>
+
+<script>
+// ---------- DATA ----------
+const pets = [
+{name:'Racoon', rarity:'Devine', price:5.50, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU_HhiBx-2RSRf3Q2LU3IlKwLiZPatLzgNCxMVEUHCOA&s=10'},
+{name:'Dragonfly', rarity:'Devine', price:2, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6kNEbboIu6-sjQ-8lJpVdzFVoAA1BT_F3V3vjow9rGw&s=10'},
+{name:'Butterfly', rarity:'Mythical', price:2.50, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFddFaLQ_mM-L9GIg9HPp9OZOdURYgT2b3yaVz5ANXow&s=10'},
+{name:'Disco Bee', rarity:'Devine', price:5, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9lKtJg5I_LaGMc4ahAr483LTyHXshddvIKG1AbdpCkA&s=10'},
+{name:'MiMix', rarity:'Legendary', price:2, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUn-6DZHPLj6IjtKy83jgBUFAn4naiJwrgQ3qa0Lzo3w&s=10'},
+{name:'T-Rex', rarity:'Devine', price:1, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYePLmIEfTWxl1zsB9-Z7SRxnV1wgSwNruDZiwslvY-Q&s=10'},
+{name:'Spino', rarity:'Devine', price:1.80, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdGiDknd-CHhHb8yIer_Z6rEQGJpV2xoMLLaBO8rZOgQ&s=10'},
+{name:'Capybara', rarity:'Legendary', price:1, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdLNpCR-wsQA39by3GPoGvK3YHQLNjeKhqOmlljyvGiw&s=10'},
+{name:'Red-Kitsune', rarity:'Prismatic', price:13, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-Q7NVFA7DXyBD3s4OcTNFQBJ25enYPKuNwfiIOjMQ8w&s=10'},
+{name:'Dilo', rarity:'Mythical', price:0.50, image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9f0ZHoxDYOxAMi5K8Lenv0Lfd_ptRBBOExGn0TEsaMA&s=10'},
+];
+
+// ---------- VARIABLES ----------
+const petGrid = document.getElementById('pet-grid');
+const searchBar = document.getElementById('searchBar');
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cartContainer = document.getElementById('cart-container');
+const cartItems = document.getElementById('cart-items');
+const cartTotal = document.getElementById('cart-total');
+const priceRange = document.getElementById('priceRange');
+const priceRangeValue = document.getElementById('priceRangeValue');
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+let cart = [];
+let favorites = [];
+
+// ---------- FUNCTIONS ----------
+function createPetCard(pet){
+    const card = document.createElement('div'); card.classList.add('pet-card');
+    card.innerHTML = `
+        <img src="${pet.image}" alt="${pet.name}" title="${pet.name} (${pet.rarity}) $${pet.price}">
+        <h3>${pet.name}</h3>
+        <span class="rarity ${pet.rarity.toLowerCase()}">${pet.rarity}</span>
+        <div class="price">$${pet.price}</div>
+        <button class="add-btn">➕ Add to Cart</button>
+        <button class="fav-btn ${favorites.includes(pet.name)?'active':''}">❤️</button>
+    `;
+    card.querySelector('.add-btn').addEventListener('click', ()=>{ 
+        const existing = cart.find(p=>p.name===pet.name);
+        if(existing) existing.qty+=1; else cart.push({...pet, qty:1});
+        updateCart();
+    });
+    card.querySelector('.fav-btn').addEventListener('click', (e)=>{
+        if(favorites.includes(pet.name)){ favorites = favorites.filter(f=>f!==pet.name); e.target.classList.remove('active'); }
+        else { favorites.push(pet.name); e.target.classList.add('active'); }
+    });
+    return card;
+}
+
+function displayPets(petsToShow){ petGrid.innerHTML=''; petsToShow.forEach(p=>petGrid.appendChild(createPetCard(p))); }
+displayPets(pets);
+
+// ---------- SEARCH & FILTERS ----------
+searchBar.addEventListener('input', ()=>{ 
+    const query=searchBar.value.toLowerCase(); 
+    displayPets(pets.filter(p=>p.name.toLowerCase().includes(query) && p.price<=priceRange.value)); 
+});
+
+filterBtns.forEach(btn=>{ 
+    btn.addEventListener('click', ()=>{
+        if(btn.id==='show-fav') return; // skip favorite
+        filterBtns.forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+        const rarity=btn.dataset.rarity;
+        displayPets(pets.filter(p=> (rarity==='all'||p.rarity.toLowerCase()===rarity) && p.price<=priceRange.value));
+    })
+});
+
+priceRange.addEventListener('input', ()=>{ 
+    priceRangeValue.textContent=priceRange.value; 
+    displayPets(pets.filter(p=>p.price<=priceRange.value)); 
+});
+
+// ---------- SORT ----------
+document.getElementById('sort-low').addEventListener('click', ()=>{ displayPets([...pets].sort((a,b)=>a.price-b.price)); });
+document.getElementById('sort-high').addEventListener('click', ()=>{ displayPets([...pets].sort((a,b)=>b.price-a.price)); });
+document.getElementById('sort-name').addEventListener('click', ()=>{ displayPets([...pets].sort((a,b)=>a.name.localeCompare(b.name))); });
+
+// ---------- CART ----------
+function updateCart(){
+    cartItems.innerHTML=''; let total=0, totalItems=0;
+    cart.forEach(p=>{
+        const li=document.createElement('li'); li.className='cart-item';
+        li.innerHTML=`
+            <img src="${p.image}">
+            <span>${p.name}</span>
+            <button class="dec">➖</button>
+            <input type="number" min="1" value="${p.qty}" class="qty">
+            <button class="inc">➕</button>
+            <span>$${p.price*p.qty}</span>
+            <button class="remove">✖</button>
+        `;
+        li.querySelector('.qty').addEventListener('change',(e)=>{ p.qty=Math.max(1,Number(e.target.value)); updateCart(); });
+        li.querySelector('.remove').addEventListener('click',()=>{ cart=cart.filter(x=>x.name!==p.name); updateCart(); });
+        li.querySelector('.inc').addEventListener('click',()=>{ p.qty+=1; updateCart(); });
+        li.querySelector('.dec').addEventListener('click',()=>{ p.qty=Math.max(1,p.qty-1); updateCart(); });
+        cartItems.appendChild(li);
+        total+=p.price*p.qty; totalItems+=p.qty;
+    });
+    cartTotal.textContent=`Items: ${totalItems} | Total: $${total}`;
+}
+
+// ---------- BUY CART ----------
+function buyCart(){
+    if(cart.length===0){ alert('Cart is empty!'); return; }
+    const text=encodeURIComponent(`I want to buy: ${cart.map(p=>p.name+' (x'+p.qty+') ($'+p.price*p.qty+')').join(', ')}. Total: $${cart.reduce((a,b)=>a+b.price*b.qty,0)}`);
+    const telegramLink=`https://t.me/NO_VA09?text=${text}`; window.open(telegramLink,'_blank');
+    cart=[]; updateCart();
+}
+
+// ---------- FAVORITES VIEW ----------
+document.getElementById('show-fav').addEventListener('click', ()=>{
+    if(favorites.length === 0){ alert('No favorite pets yet!'); return; }
+    displayPets(pets.filter(p=>favorites.includes(p.name)));
+});
+
+// ---------- EVENT LISTENERS ----------
+document.getElementById('buyCartBtn').addEventListener('click', buyCart);
+document.getElementById('buy-now').addEventListener('click', ()=>{
+    if(cart.length === 0){ 
+        alert('Your cart is empty! Please add pets first.');
+        document.getElementById('pet-catalog').scrollIntoView({behavior:'smooth'});
+        return; 
+    }
+    buyCart();
+});
+document.getElementById('clear-cart').addEventListener('click',()=>{ cart=[]; updateCart(); });
+document.getElementById('cart-toggle').addEventListener('click',()=>{ cartContainer.classList.toggle('show'); });
+cartContainer.querySelector('.cart-close').addEventListener('click',()=>{ cartContainer.classList.remove('show'); });
+
+// ---------- DARK MODE ----------
+darkModeToggle.addEventListener('click', ()=>{ document.body.classList.toggle('dark'); });
+
+// ---------- RARITY HOVER EFFECT ----------
+document.querySelectorAll('.rarity').forEach(r=>{
+    r.addEventListener('mouseenter', ()=>{ r.style.transform='scale(1.1)'; });
+    r.addEventListener('mouseleave', ()=>{ r.style.transform='scale(1)'; });
+});
+</script>
+
+</body>
+</html>
